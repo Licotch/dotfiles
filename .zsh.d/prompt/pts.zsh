@@ -2,20 +2,6 @@
 
 NEWLINE=$'\n'
 
-if echo $TTY | grep pts > /dev/null; then
-    ARROW1='──'
-    ARROW2='──>'
-    ARROW3='╭─╴'
-    ARROW4='│'
-    ARROW5='╰─>'
-else
-    ARROW1='--'
-    ARROW2='-->'
-    ARROW3=',--'
-    ARROW4='|'
-    ARROW5='`->'
-fi
-
 function zle-line-init zle-keymap-select {
     case $KEYMAP in
     main|viins)
