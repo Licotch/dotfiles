@@ -11,6 +11,7 @@ set ignorecase
 set smartcase
 set laststatus=2
 highlight StatusLine cterm=None ctermbg=236 ctermfg=None
+set clipboard=unnamed
 set incsearch
 set wrapscan
 set hlsearch
