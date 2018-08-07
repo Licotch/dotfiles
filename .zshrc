@@ -63,7 +63,7 @@ bindkey '^N' history-search-forward
 source $ZDOTDIR/alias.zsh
 source $ZDOTDIR/options.zsh
 source $ZDOTDIR/transfer.zsh
-source $ZDOTDIR/prompt.zsh
+source $ZDOTDIR/prompt/prompt.zsh
 
 ###---------------------------------------------------
 ## プラグイン 
