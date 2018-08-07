@@ -27,7 +27,7 @@ function zle-line-init zle-keymap-select {
     local GITSTATUS=$vcs_info_msg_0_
 
     local LEFT0="%(?..%F{red}──> %?)"
-    local LEFT1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%~"
+    local LEFT1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%(4~|%-1~//%2~|%3~)"
     local LEFT2="%F{green}│  %f "
     local LEFT3="%F{green}╰─>%f "
 
@@ -74,7 +74,7 @@ function zle-line-init zle-keymap-select {
 
 function zle-line-finish {
     local LINE0="%(?..%F{red}──> %?)$NEWLINE"
-    local LINE1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%~$NEWLINE"
+    local LINE1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%(4~|%-1~//%2~|%3~)$NEWLINE"
     local LINE2="%F{green}╰─> %f"
 
     PS1="$LINE0$LINE1$LINE2"
