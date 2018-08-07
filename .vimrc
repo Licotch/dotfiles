@@ -10,7 +10,7 @@ set shiftwidth=4
 set ignorecase
 set smartcase
 set laststatus=2
-highlight StatusLine cterm=None ctermbg=236 ctermfg=208
+highlight StatusLine cterm=None ctermbg=236 ctermfg=None
 set incsearch
 set wrapscan
 set hlsearch
