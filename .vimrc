@@ -9,6 +9,8 @@ set tabstop=4
 set shiftwidth=4
 set ignorecase
 set smartcase
+set laststatus=2
+highlight StatusLine cterm=None ctermbg=236 ctermfg=208
 set incsearch
 set wrapscan
 set hlsearch
