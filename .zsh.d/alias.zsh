@@ -15,3 +15,5 @@ alias mkdir='mkdir -p'
 alias spacemacs='emacs -nw'
 
 alias ls='ls -F --color'
+
+alias hy='hy --repl-output-fn=hy.contrib.hy-repr.hy-repr'
