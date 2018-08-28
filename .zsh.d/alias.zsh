@@ -19,3 +19,7 @@ alias emacs='emacs -nw'
 alias hy='hy --repl-output-fn=hy.contrib.hy-repr.hy-repr'
 
 alias pdf='firefox --new-tab'
+
+alias packer='packer-aur'
+
+alias gosh='rlwrap gosh'
