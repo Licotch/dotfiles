@@ -27,7 +27,7 @@ exec ros -Q -- $0 "$@"
   (declare (ignorable argv))
   (let ((theme (car argv))
         (template (cl-fad:merge-pathnames-as-file *load-pathname* "config.template"))
-        (config (cl-fad:merge-pathnames-as-file *load-pathname* "config.test")))
+        (config (cl-fad:merge-pathnames-as-file *load-pathname* "config")))
     (if theme
         (let ((theme (cl-fad:merge-pathnames-as-file *load-pathname*
                                                      (concatenate 'string "themes/" theme))))
@@ -43,7 +43,7 @@ exec ros -Q -- $0 "$@"
                                       :do (if (search "background" line)
                                               (format fout
                                                       "background = ~a~%"
-                                                      (hex2rgba (gethexcolor line) 0.7))
+                                                      (hex2rgba (gethexcolor line) 0.8))
                                               (format fout "~a~%" line))))
                               (format fout "~a~%" line)))))))
         (format t "テーマを指定してください~%"))))
