@@ -23,3 +23,5 @@ alias pdf='firefox --new-tab'
 alias packer='packer-aur'
 
 alias gosh='rlwrap gosh'
+alias guile='rlwrap guile'
+alias scheme='rlwrap scheme'
