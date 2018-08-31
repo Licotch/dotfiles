@@ -35,16 +35,15 @@ exec ros -Q -- $0 "$@"
             (with-open-file (fout config :direction :output :if-exists :supersede)
               (loop :for line := (read-line fin nil nil)
                     :while line
-                    :do (unless (eq line :eof)
-                          (if (string= line "{{colors}}")
-                              (with-open-file (theme-stream theme :direction :input :if-does-not-exist :error)
-                                (loop :for line := (read-line theme-stream nil nil)
-                                      :while line
-                                      :do (if (search "background" line)
-                                              (format fout
-                                                      "background = ~a~%"
-                                                      (hex2rgba (gethexcolor line) 0.8))
-                                              (format fout "~a~%" line))))
-                              (format fout "~a~%" line)))))))
+                    :do (if (string= line "{{colors}}")
+                            (with-open-file (theme-stream theme :direction :input :if-does-not-exist :error)
+                              (loop :for line := (read-line theme-stream nil nil)
+                                    :while line
+                                    :do (if (search "background" line)
+                                            (format fout
+                                                    "background = ~a~%"
+                                                    (hex2rgba (gethexcolor line) 0.8))
+                                            (format fout "~a~%" line))))
+                            (format fout "~a~%" line))))))
         (format t "テーマを指定してください~%"))))
 ;;; vim: set ft=lisp lisp:
