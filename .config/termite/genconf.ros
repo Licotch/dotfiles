@@ -33,7 +33,7 @@ exec ros -Q -- $0 "$@"
         (template (cl-fad:merge-pathnames-as-file *load-pathname* "config.template"))
         (config (cl-fad:merge-pathnames-as-file *load-pathname* "config"))
         line)
-    (if (cl-fad:file-exists-p theme)
+    (if (first argv)
         (with-open-file (fin template :direction :input :if-does-not-exist :error)
           (with-open-file (fout config :direction :output :if-exists :supersede)
             (tagbody parse-line
