@@ -1,0 +1,50 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (ql:quickload '(cl-fad) :silent t)
+  )
+
+(defpackage :ros.script.genconf.3744665830
+  (:use :cl))
+(in-package :ros.script.genconf.3744665830)
+
+(defun gethexcolor (line)
+  (string-right-trim " " (subseq line (1+ (position #\# line)))))
+
+(defun hex2rgba (hexcolor alpha)
+  (format nil
+          "rgba(~a, ~a, ~a, ~a)~%"
+          (parse-integer (subseq hexcolor 0 2) :radix 16)
+          (parse-integer (subseq hexcolor 2 4) :radix 16)
+          (parse-integer (subseq hexcolor 4 6) :radix 16)
+          alpha))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (let ((theme (car argv))
+        (template (cl-fad:merge-pathnames-as-file *load-pathname* "config.template"))
+        (config (cl-fad:merge-pathnames-as-file *load-pathname* "config.test")))
+    (if theme
+        (let ((theme (cl-fad:merge-pathnames-as-file *load-pathname*
+                                                     (concatenate 'string "themes/" theme))))
+          (with-open-file (fin template :direction :input :if-does-not-exist :error)
+            (with-open-file (fout config :direction :output :if-exists :supersede)
+              (loop :for line := (read-line fin nil nil)
+                    :while line
+                    :do (unless (eq line :eof)
+                          (if (string= line "{{colors}}")
+                              (with-open-file (theme-stream theme :direction :input :if-does-not-exist :error)
+                                (loop :for line := (read-line theme-stream nil nil)
+                                      :while line
+                                      :do (if (search "background" line)
+                                              (format fout
+                                                      "background = ~a~%"
+                                                      (hex2rgba (gethexcolor line) 0.7))
+                                              (format fout "~a~%" line))))
+                              (format fout "~a~%" line)))))))
+        (format t "テーマを指定してください~%"))))
+;;; vim: set ft=lisp lisp:
