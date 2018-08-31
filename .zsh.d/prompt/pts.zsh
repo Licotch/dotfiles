@@ -26,10 +26,17 @@ function zle-line-init zle-keymap-select {
 
     local GITSTATUS=$vcs_info_msg_0_
 
-    local LEFT0="%(?..%F{red}──> %?)"
-    local LEFT1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%(4~|%-1~//%2~|%3~)"
-    local LEFT2="%F{green}│  %f "
-    local LEFT3="%F{green}╰─>%f "
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        local LEFT0="%(?..%F{red}──> %?)"
+        local LEFT1="%F{green}╭─╴ %F{red}(ssh) %F{cyan}%n%f@%F{magenta}%m %f%(4~|%-1~//%2~|%3~)"
+        local LEFT2="%F{green}│  %f "
+        local LEFT3="%F{green}╰─>%f "
+    else
+        local LEFT0="%(?..%F{red}──> %?)"
+        local LEFT1="%F{green}╭─╴ %F{cyan}%n%f@%F{magenta}%m %f%(4~|%-1~//%2~|%3~)"
+        local LEFT2="%F{green}│  %f "
+        local LEFT3="%F{green}╰─>%f "
+    fi
 
     case $PROMPT_STYLE in
     1)
