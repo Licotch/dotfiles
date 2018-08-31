@@ -5,11 +5,12 @@ exec ros -Q -- $0 "$@"
 |#
 (progn ;;init forms
   (ros:ensure-asdf)
-  #+quicklisp (ql:quickload '(cl-fad) :silent t)
-  )
+  #+quicklisp (ql:quickload '(cl-fad
+                              alexandria
+                              parse-float) :silent t))
 
 (defpackage :ros.script.genconf.3744665830
-  (:use :cl))
+  (:use :cl :parse-float))
 (in-package :ros.script.genconf.3744665830)
 
 (defun gethexcolor (line)
@@ -25,25 +26,27 @@ exec ros -Q -- $0 "$@"
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (let ((theme (car argv))
+  (let ((theme (cl-fad:merge-pathnames-as-file *load-pathname* (concatenate 'string "themes/" (first argv))))
+        (alpha (if (second argv)
+                   (alexandria:clamp (parse-float (second argv) :junk-allowed t) 0 1)
+                   1))
         (template (cl-fad:merge-pathnames-as-file *load-pathname* "config.template"))
-        (config (cl-fad:merge-pathnames-as-file *load-pathname* "config")))
-    (if theme
-        (let ((theme (cl-fad:merge-pathnames-as-file *load-pathname*
-                                                     (concatenate 'string "themes/" theme))))
-          (with-open-file (fin template :direction :input :if-does-not-exist :error)
-            (with-open-file (fout config :direction :output :if-exists :supersede)
-              (loop :for line := (read-line fin nil nil)
-                    :while line
-                    :do (if (string= line "{{colors}}")
-                            (with-open-file (theme-stream theme :direction :input :if-does-not-exist :error)
-                              (loop :for line := (read-line theme-stream nil nil)
-                                    :while line
-                                    :do (if (search "background" line)
-                                            (format fout
-                                                    "background = ~a~%"
-                                                    (hex2rgba (gethexcolor line) 0.8))
-                                            (format fout "~a~%" line))))
-                            (format fout "~a~%" line))))))
-        (format t "テーマを指定してください~%"))))
+        (config (cl-fad:merge-pathnames-as-file *load-pathname* "config"))
+        line)
+    (if (cl-fad:file-exists-p theme)
+        (with-open-file (fin template :direction :input :if-does-not-exist :error)
+          (with-open-file (fout config :direction :output :if-exists :supersede)
+            (tagbody parse-line
+               (when (setq line (read-line fin nil nil))
+                 (cond ((string= line "{{colors}}")
+                        (with-open-file (theme-stream theme :direction :input :if-does-not-exist :error)
+                          (tagbody parse-theme
+                             (when (setq line (read-line theme-stream nil nil))
+                               (if (search "background" line)
+                                   (format fout "background = ~a~%" (hex2rgba (gethexcolor line) alpha))
+                                   (format fout "~a~%" line))
+                               (go parse-theme)))))
+                       (t (format fout "~a~%" line)))
+                 (go parse-line)))))
+        (format t "無効なテーマです~%"))))
 ;;; vim: set ft=lisp lisp:
