@@ -1,6 +1,3 @@
-[submodule "zshrc"]
-	path = zshrc
-	url = https://github.com/Licotch/zshrc
 [submodule "vimrc"]
 	path = vimrc
 	url = https://github.com/Licotch/vimrc
