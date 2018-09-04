@@ -7,7 +7,7 @@
 #-----------------------------------------------------
 
 # 環境変数
-export PATH=$PATH:$HOME/tools
+export PATH=$PATH:$HOME/.roswell/bin
 export ZDOTDIR=$HOME/.zsh.d
 
 # viキーバインドを有効に
