@@ -1,0 +1,3 @@
+[submodule "zshrc"]
+	path = zshrc
+	url = https://github.com/Licotch/zshrc
