@@ -20,6 +20,7 @@ for f in .??*; do
 done
 
 ./zshrc/install.sh
+./vimrc/install.sh
 
 echo "setup .config..."
 if [ ! -e ~/.config ]; then
